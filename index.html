@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zoro Trader — Quotex Trading Channel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes pulse-slow {
+      0%, 100% { box-shadow: 0 0 40px rgba(16,185,129,0.5); }
+      50% { box-shadow: 0 0 60px rgba(16,185,129,0.8); }
+    }
+    .animate-pulse-slow {
+      animation: pulse-slow 3s ease-in-out infinite;
+    }
+    body {
+      margin: 0;
+      overflow-x: hidden;
+    }
+  </style>
+<base target="_blank">
+</head>
+<body class="bg-black text-white">
+
+  <div class="min-h-screen w-full relative overflow-hidden flex flex-col items-center justify-center">
+    <!-- 3D Background Canvas -->
+    <canvas id="bgCanvas" class="absolute inset-0 w-full h-full z-0"></canvas>
+    
+    <!-- Gradient Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/80 z-10 pointer-events-none"></div>
+    
+    <!-- Content -->
+    <div class="relative z-20 flex flex-col items-center text-center px-6 max-w-xl w-full">
+      <!-- Logo -->
+      <div class="w-28 h-28 rounded-full border-4 border-emerald-400/80 shadow-[0_0_40px_rgba(16,185,129,0.5)] overflow-hidden mb-6 animate-pulse-slow">
+        <img src="https://i.ibb.co/ZpcfnXfS/zoro-logo.png" alt="Zoro Trader Logo" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/112/10b981/ffffff?text=ZT';this.onerror=null">
+      </div>
+      
+      <!-- Channel Name -->
+      <h1 class="text-5xl font-extrabold tracking-tight mb-2 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 drop-shadow-lg">
+        Zoro Trader
+      </h1>
+      
+      <!-- Category Badge -->
+      <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-sm font-semibold tracking-wide mb-8 backdrop-blur-sm">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
+        Quotex Trading Channel
+      </span>
+      
+      <!-- Details -->
+      <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 p-6 mb-8 w-full shadow-2xl">
+        <p class="text-gray-300 text-lg leading-relaxed mb-4">
+          Join <strong class="text-emerald-400">Zoro Trader</strong> — the ultimate community for Quotex traders. Get real-time signals, expert strategies, and market insights that cut through the noise like a true swordsman.
+        </p>
+        <div class="flex flex-wrap justify-center gap-3 text-sm">
+          <span class="px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">📈 Live Signals</span>
+          <span class="px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">⚔️ Pro Strategies</span>
+          <span class="px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">💬 24/7 Community</span>
+        </div>
+      </div>
+      
+      <!-- Join Button -->
+      <a href="https://telegram.me/+xCrA7kydk2RkN2Y0" target="_blank" class="group relative inline-flex items-center justify-center px-10 py-4 text-lg font-bold text-white rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 shadow-[0_0_30px_rgba(16,185,129,0.4)] hover:shadow-[0_0_50px_rgba(16,185,129,0.7)] transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden">
+        <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
+        <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.015-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.442-.751-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.477-1.635.099-.002.321.023.465.141.121.099.154.232.17.325.015.093.034.305.019.471z"/></svg>
+        Join Channel Now
+      </a>
+      
+      <p class="mt-4 text-xs text-gray-500">Free to join • Instant access • No spam</p>
+
+      <!-- 20 Second Redirect Countdown -->
+      <p id="redirectCountdown" class="mt-3 text-xs text-emerald-400">
+        Redirecting in 20 seconds...
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // 3D Wireframe Sphere Background
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    
+    const particles = [];
+    const particleCount = 80;
+    const connectionDistance = 150;
+    const mouse = { x: null, y: null };
+    
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        z: Math.random() * 2 - 1,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        vz: (Math.random() - 0.5) * 0.3,
+        size: Math.random() * 2 + 1
+      });
+    }
+    
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+    
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.z += p.vz;
+        
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+        if (p.z < -1) p.z = 1;
+        if (p.z > 1) p.z = -1;
+        
+        if (mouse.x !== null) {
+          const dx = mouse.x - p.x;
+          const dy = mouse.y - p.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 200) {
+            p.vx -= dx * 0.0001;
+            p.vy -= dy * 0.0001;
+          }
+        }
+        
+        const scale = (p.z + 2) / 3;
+        const px = p.x;
+        const py = p.y;
+        const pSize = p.size * scale;
+        
+        ctx.beginPath();
+        ctx.arc(px, py, pSize, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(16, 185, 129, ${0.4 * scale})`;
+        ctx.fill();
+        
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if (dist < connectionDistance) {
+            const alpha = (1 - dist / connectionDistance) * 0.25 * scale;
+            ctx.beginPath();
+            ctx.moveTo(px, py);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(16, 185, 129, ${alpha})`;
+            ctx.lineWidth = 0.5 * scale;
+            ctx.stroke();
+          }
+        }
+      }
+      
+      const time = Date.now() * 0.001;
+      const centerX = width / 2;
+      const centerY = height / 2;
+      
+      for (let r = 0; r < 3; r++) {
+        const radius = 150 + r * 80;
+        const tilt = 0.3 + r * 0.1;
+        
+        ctx.beginPath();
+        for (let a = 0; a <= Math.PI * 2; a += 0.05) {
+          const x = centerX + Math.cos(a + time * (0.3 + r * 0.1)) * radius;
+          const y = centerY + Math.sin(a + time * (0.3 + r * 0.1)) * radius * tilt;
+          if (a === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = `rgba(16, 185, 129, ${0.08 - r * 0.02})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      
+      requestAnimationFrame(animate);
+    }
+    animate();
+    
+    // Meta Pixel tracking
+    !function(f,b,e,v,n,t,s){
+      if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window,document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      
+      fbq('init', '1045800878281158');
+      fbq('track', 'PageView');
+      
+      document.querySelector('a[href*="telegram.me"]').addEventListener('click', function() {
+        fbq('track', 'Lead');
+      });
+
+      // 5 Second Automatic Redirect
+      let redirectSeconds = 20;
+      const redirectCountdown = document.getElementById('redirectCountdown');
+      const redirectURL = 'https://telegram.me/+xCrA7kydk2RkN2Y0';
+
+      const redirectTimer = setInterval(function() {
+        redirectSeconds--;
+
+        if (redirectSeconds > 0) {
+          redirectCountdown.textContent = 'Redirecting in ' + redirectSeconds + ' seconds...';
+        } else {
+          clearInterval(redirectTimer);
+          redirectCountdown.textContent = 'Redirecting now...';
+          window.location.href = redirectURL;
+        }
+      }, 1000);
+  </script>
+
+  <!-- Meta Pixel Noscript Fallback -->
+  <noscript>
+    <img height="1" width="1" style="display:none" 
+         src="https://www.facebook.com/tr?id=1045800878281158&ev=PageView&noscript=1"/> 
+  </noscript> 
+</body> 
+</html>
