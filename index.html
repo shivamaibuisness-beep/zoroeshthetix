@@ -1,233 +1,685 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zoro Trader — Quotex Trading Channel</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @keyframes pulse-slow {
-      0%, 100% { box-shadow: 0 0 40px rgba(16,185,129,0.5); }
-      50% { box-shadow: 0 0 60px rgba(16,185,129,0.8); }
-    }
-    .animate-pulse-slow {
-      animation: pulse-slow 3s ease-in-out infinite;
-    }
-    body {
-      margin: 0;
-      overflow-x: hidden;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoro Trader - Quotex Trading Channel</title>
+
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2170794737119479');
+    fbq('track', 'PageView');
+    </script>
+    <noscript>
+    <img height="1" width="1" style="display:none" 
+    src="https://www.facebook.com/tr?id=2170794737119479&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Meta Pixel Code -->
+    
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f4e 50%, #0a0e27 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #fff;
+        }
+
+        /* Animated Background Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(0, 255, 136, 0.6);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Trading Chart Background Animation */
+        .chart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.1;
+        }
+
+        .candle {
+            position: absolute;
+            width: 8px;
+            animation: candleMove 8s infinite ease-in-out;
+        }
+
+        .candle-body {
+            width: 100%;
+            border-radius: 2px;
+        }
+
+        .candle-wick {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes candleMove {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Logo Section */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .logo-container {
+            position: relative;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        .logo-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 4px solid #00ff88;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5), 0 0 60px rgba(0, 255, 136, 0.3);
+            object-fit: cover;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(0, 255, 136, 0.5), 0 0 40px rgba(0, 255, 136, 0.3);
+            }
+            to {
+                box-shadow: 0 0 40px rgba(0, 255, 136, 0.8), 0 0 80px rgba(0, 255, 136, 0.5);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Title Section */
+        .title-section {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: linear-gradient(90deg, #00ff88, #00ccff, #00ff88);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shine 3s linear infinite;
+            text-shadow: none;
+            margin-bottom: 10px;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #a0aec0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease-out 0.6s both;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 20px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: floatCard 3s ease-in-out infinite;
+        }
+
+        .stat-card:nth-child(2) { animation-delay: 0.5s; }
+        .stat-card:nth-child(3) { animation-delay: 1s; }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            border-color: #00ff88;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #00ff88;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #a0aec0;
+            margin-top: 5px;
+        }
+
+        /* CTA Button - JUST BELOW STATS */
+        .cta-section {
+            text-align: center;
+            margin: 10px 0 50px 0;
+            animation: fadeInUp 1s ease-out 0.9s both;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #00ff88, #00cc6a);
+            color: #0a0e27;
+            font-size: 1.4rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 22px 55px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: buttonPulse 2s infinite;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { box-shadow: 0 10px 40px rgba(0, 255, 136, 0.4); }
+            50% { box-shadow: 0 10px 60px rgba(0, 255, 136, 0.7); }
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.6);
+        }
+
+        .telegram-icon {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+        }
+
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease-out 1.2s both;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 4px solid #00ff88;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .feature-item:hover::before {
+            left: 100%;
+        }
+
+        .feature-item:hover {
+            transform: translateX(10px);
+            border-left-color: #00ccff;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            color: #a0aec0;
+            line-height: 1.5;
+        }
+
+        /* Trust Badges */
+        .trust-badges {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+            animation: fadeInUp 1s ease-out 1.5s both;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            color: #a0aec0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .badge-icon {
+            color: #00ff88;
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            padding-top: 60px;
+            text-align: center;
+            animation: fadeIn 1s ease-out 1.8s both;
+        }
+
+        .footer-divider {
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff88, transparent);
+            margin: 0 auto 20px;
+        }
+
+        .footer-text {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.2rem;
+            }
+
+            .logo-img {
+                width: 150px;
+                height: 150px;
+            }
+
+            .cta-button {
+                font-size: 1.1rem;
+                padding: 18px 40px;
+            }
+
+            .stats-section {
+                gap: 15px;
+            }
+
+            .stat-card {
+                padding: 15px 20px;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff88, #00ccff);
+            z-index: 9999;
+            animation: loading 2s ease-out forwards;
+        }
+
+        @keyframes loading {
+            0% { width: 0; }
+            100% { width: 100%; opacity: 0; }
+        }
+
+        /* Glow effect behind logo */
+        .logo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: glowPulse 3s infinite;
+            z-index: -1;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+        }
+    </style>
 <base target="_blank">
 </head>
-<body class="bg-black text-white">
+<body>
+    <!-- Loading Bar -->
+    <div class="loading-bar"></div>
 
-  <div class="min-h-screen w-full relative overflow-hidden flex flex-col items-center justify-center">
-    <!-- 3D Background Canvas -->
-    <canvas id="bgCanvas" class="absolute inset-0 w-full h-full z-0"></canvas>
-    
-    <!-- Gradient Overlay -->
-    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/80 z-10 pointer-events-none"></div>
-    
-    <!-- Content -->
-    <div class="relative z-20 flex flex-col items-center text-center px-6 max-w-xl w-full">
-      <!-- Logo -->
-      <div class="w-28 h-28 rounded-full border-4 border-emerald-400/80 shadow-[0_0_40px_rgba(16,185,129,0.5)] overflow-hidden mb-6 animate-pulse-slow">
-        <img src="https://i.ibb.co/ZpcfnXfS/zoro-logo.png" alt="Zoro Trader Logo" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/112/10b981/ffffff?text=ZT';this.onerror=null">
-      </div>
-      
-      <!-- Channel Name -->
-      <h1 class="text-5xl font-extrabold tracking-tight mb-2 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 drop-shadow-lg">
-        Zoro Trader
-      </h1>
-      
-      <!-- Category Badge -->
-      <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-sm font-semibold tracking-wide mb-8 backdrop-blur-sm">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
-        Quotex Trading Channel
-      </span>
-      
-      <!-- Details -->
-      <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 p-6 mb-8 w-full shadow-2xl">
-        <p class="text-gray-300 text-lg leading-relaxed mb-4">
-          Join <strong class="text-emerald-400">Zoro Trader</strong> — the ultimate community for Quotex traders. Get real-time signals, expert strategies, and market insights that cut through the noise like a true swordsman.
-        </p>
-        <div class="flex flex-wrap justify-center gap-3 text-sm">
-          <span class="px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">📈 Live Signals</span>
-          <span class="px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">⚔️ Pro Strategies</span>
-          <span class="px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">💬 24/7 Community</span>
+    <!-- Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Chart Background -->
+    <div class="chart-bg" id="chartBg"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <div class="logo-container">
+                <div class="logo-glow"></div>
+                <img src="https://i.ibb.co/hFQ0cQjq/zoro-trader-logo.jpg" alt="Zoro Trader Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/200/0a0e27/00ff88?text=ZORO'">
+            </div>
         </div>
-      </div>
-      
-      <!-- Join Button -->
-      <a href="https://telegram.me/+xCrA7kydk2RkN2Y0" target="_blank" class="group relative inline-flex items-center justify-center px-10 py-4 text-lg font-bold text-white rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 shadow-[0_0_30px_rgba(16,185,129,0.4)] hover:shadow-[0_0_50px_rgba(16,185,129,0.7)] transition-all duration-300 hover:scale-105 active:scale-95 overflow-hidden">
-        <span class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
-        <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.015-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.442-.751-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.477-1.635.099-.002.321.023.465.141.121.099.154.232.17.325.015.093.034.305.019.471z"/></svg>
-        Join Channel Now
-      </a>
-      
-      <p class="mt-4 text-xs text-gray-500">Free to join • Instant access • No spam</p>
 
-      <!-- 20 Second Redirect Countdown -->
-      <p id="redirectCountdown" class="mt-3 text-xs text-emerald-400">
-        Redirecting in 20 seconds...
-      </p>
+        <!-- Title Section -->
+        <div class="title-section">
+            <h1 class="main-title">Zoro Trader</h1>
+            <p class="subtitle">Quotex Trading Signals Channel</p>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <span class="stat-number">95%</span>
+                <div class="stat-label">Accuracy Rate</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">24/7</span>
+                <div class="stat-label">Live Signals</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number">FREE</span>
+                <div class="stat-label">Premium Access</div>
+            </div>
+        </div>
+
+        <!-- CTA Button - JUST BELOW STATS -->
+        <div class="cta-section">
+            <a href="https://telegram.me/+xCrA7kydk2RkN2Y0" class="cta-button" onclick="fbq('track', 'Lead');">
+                <svg class="telegram-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+                Join Telegram Channel
+            </a>
+        </div>
+
+        <!-- Features Section -->
+        <div class="features">
+            <div class="feature-item">
+                <span class="feature-icon">📊</span>
+                <div class="feature-title">Real-Time Signals</div>
+                <div class="feature-desc">Instant Quotex trading signals with high accuracy for maximum profits</div>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🎯</span>
+                <div class="feature-title">Expert Analysis</div>
+                <div class="feature-desc">Professional market analysis and trend predictions by experienced traders</div>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">💰</span>
+                <div class="feature-title">Profit Strategies</div>
+                <div class="feature-desc">Proven trading strategies to maximize your earnings on Quotex platform</div>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🛡️</span>
+                <div class="feature-title">Risk Management</div>
+                <div class="feature-desc">Smart risk management tips to protect your capital while trading</div>
+            </div>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="trust-badges">
+            <div class="badge">
+                <span class="badge-icon">✓</span>
+                <span>Verified Signals</span>
+            </div>
+            <div class="badge">
+                <span class="badge-icon">⚡</span>
+                <span>Instant Alerts</span>
+            </div>
+            <div class="badge">
+                <span class="badge-icon">👥</span>
+                <span>Active Community</span>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-divider"></div>
+            <p class="footer-text" style="margin-top: 15px; font-size: 0.8rem;">
+                © 2026 Zoro Trader. All rights reserved.
+            </p>
+        </div>
     </div>
-  </div>
 
-  <script>
-    // 3D Wireframe Sphere Background
-    const canvas = document.getElementById('bgCanvas');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-    
-    const particles = [];
-    const particleCount = 80;
-    const connectionDistance = 150;
-    const mouse = { x: null, y: null };
-    
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        z: Math.random() * 2 - 1,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        vz: (Math.random() - 0.5) * 0.3,
-        size: Math.random() * 2 + 1
-      });
-    }
-    
-    window.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
-    
-    function animate() {
-      ctx.clearRect(0, 0, width, height);
-      
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.z += p.vz;
-        
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
-        if (p.z < -1) p.z = 1;
-        if (p.z > 1) p.z = -1;
-        
-        if (mouse.x !== null) {
-          const dx = mouse.x - p.x;
-          const dy = mouse.y - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 200) {
-            p.vx -= dx * 0.0001;
-            p.vy -= dy * 0.0001;
-          }
+    <script>
+        // Generate floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.width = (Math.random() * 4 + 2) + 'px';
+                particle.style.height = particle.style.width;
+
+                const colors = ['rgba(0, 255, 136, 0.6)', 'rgba(0, 204, 255, 0.6)', 'rgba(0, 255, 136, 0.4)'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+                container.appendChild(particle);
+            }
         }
-        
-        const scale = (p.z + 2) / 3;
-        const px = p.x;
-        const py = p.y;
-        const pSize = p.size * scale;
-        
-        ctx.beginPath();
-        ctx.arc(px, py, pSize, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(16, 185, 129, ${0.4 * scale})`;
-        ctx.fill();
-        
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dx = p.x - p2.x;
-          const dy = p.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          
-          if (dist < connectionDistance) {
-            const alpha = (1 - dist / connectionDistance) * 0.25 * scale;
-            ctx.beginPath();
-            ctx.moveTo(px, py);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(16, 185, 129, ${alpha})`;
-            ctx.lineWidth = 0.5 * scale;
-            ctx.stroke();
-          }
+
+        // Generate animated candlestick chart background
+        function createChartBackground() {
+            const container = document.getElementById('chartBg');
+            const candleCount = 30;
+
+            for (let i = 0; i < candleCount; i++) {
+                const candle = document.createElement('div');
+                candle.className = 'candle';
+                candle.style.left = (i * 3.5) + '%';
+                candle.style.bottom = (Math.random() * 60 + 10) + '%';
+
+                const isGreen = Math.random() > 0.4;
+                const height = Math.random() * 80 + 20;
+                const wickTop = Math.random() * 20 + 5;
+                const wickBottom = Math.random() * 20 + 5;
+
+                const body = document.createElement('div');
+                body.className = 'candle-body';
+                body.style.height = height + 'px';
+                body.style.background = isGreen ? 'rgba(0, 255, 136, 0.3)' : 'rgba(255, 50, 50, 0.3)';
+
+                const wickTopEl = document.createElement('div');
+                wickTopEl.className = 'candle-wick';
+                wickTopEl.style.height = wickTop + 'px';
+                wickTopEl.style.bottom = height + 'px';
+
+                const wickBottomEl = document.createElement('div');
+                wickBottomEl.className = 'candle-wick';
+                wickBottomEl.style.height = wickBottom + 'px';
+                wickBottomEl.style.top = '100%';
+
+                candle.appendChild(wickTopEl);
+                candle.appendChild(body);
+                candle.appendChild(wickBottomEl);
+
+                candle.style.animationDelay = (i * 0.2) + 's';
+                candle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+
+                container.appendChild(candle);
+            }
         }
-      }
-      
-      const time = Date.now() * 0.001;
-      const centerX = width / 2;
-      const centerY = height / 2;
-      
-      for (let r = 0; r < 3; r++) {
-        const radius = 150 + r * 80;
-        const tilt = 0.3 + r * 0.1;
-        
-        ctx.beginPath();
-        for (let a = 0; a <= Math.PI * 2; a += 0.05) {
-          const x = centerX + Math.cos(a + time * (0.3 + r * 0.1)) * radius;
-          const y = centerY + Math.sin(a + time * (0.3 + r * 0.1)) * radius * tilt;
-          if (a === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.closePath();
-        ctx.strokeStyle = `rgba(16, 185, 129, ${0.08 - r * 0.02})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-      
-      requestAnimationFrame(animate);
-    }
-    animate();
-    
-    // Meta Pixel tracking
-    !function(f,b,e,v,n,t,s){
-      if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window,document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      
-      fbq('init', '1045800878281158');
-      fbq('track', 'PageView');
-      
-      document.querySelector('a[href*="telegram.me"]').addEventListener('click', function() {
-        fbq('track', 'Lead');
-      });
 
-      // 5 Second Automatic Redirect
-      let redirectSeconds = 20;
-      const redirectCountdown = document.getElementById('redirectCountdown');
-      const redirectURL = 'https://telegram.me/+xCrA7kydk2RkN2Y0';
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            createChartBackground();
+        });
 
-      const redirectTimer = setInterval(function() {
-        redirectSeconds--;
-
-        if (redirectSeconds > 0) {
-          redirectCountdown.textContent = 'Redirecting in ' + redirectSeconds + ' seconds...';
-        } else {
-          clearInterval(redirectTimer);
-          redirectCountdown.textContent = 'Redirecting now...';
-          window.location.href = redirectURL;
-        }
-      }, 1000);
-  </script>
-
-  <!-- Meta Pixel Noscript Fallback -->
-  <noscript>
-    <img height="1" width="1" style="display:none" 
-         src="https://www.facebook.com/tr?id=1045800878281158&ev=PageView&noscript=1"/> 
-  </noscript> 
-</body> 
+        // Track button clicks with Meta Pixel
+        document.querySelector('.cta-button').addEventListener('click', function() {
+            fbq('track', 'Lead');
+            fbq('track', 'CompleteRegistration');
+        });
+    </script>
+</body>
 </html>
